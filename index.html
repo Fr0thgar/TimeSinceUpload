@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Michael Reeves Last Upload Counter</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <div class="container">
+        <h1>Time Since Michael Reeves Uploaded a Video</h1>
+        <div id="counter">Loading...</div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        const channelId = '@MichaelReeves'
+        fetch('/latest-upload/${channelId}')
+            .then(response => response.json())
+            .then(data => {
+                if (data.publish_date) {
+                    const lastUploadTime = new Date(data.publish_date);
+                    setInterval(() => updateCounter(lastUploadTime), 1000);
+                } else {
+                    document.getElementById('counter').innerHTML = 'No Videos found.';
+                }
+            })
+            .catch(error => {
+                document.getElementById('counter').innerHTML = 'Error fetching data.';
+            });
+    </script>
+</body>
+</html>
